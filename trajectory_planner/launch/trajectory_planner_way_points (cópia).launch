@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+
+  <node name="APwaypoints" pkg="trajectory_planner" type="APwaypoints" required="true" output="screen"/>
+
+</launch>

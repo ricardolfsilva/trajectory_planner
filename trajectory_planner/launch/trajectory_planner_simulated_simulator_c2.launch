@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Free space include -->
+  <include file="$(find free_space_detection)/launch/robotmodel.launch"/>
+  <!--<group ns="/pcp/fus/planar_pc"><remap from="/pointcloud0" to="/pc_out_pointcloud"/><remap from="/tf" to="/trf/frames"/><remap from="/tracking_frame" to="/atc/laser/center_top_roof"/><remap from="/tracking_frame" to="/tracking_frame1"/><remap from="/pc_out" to="/pcp/fus/planar_pc/points"/><node name="planar_pc" pkg="mtt" type="planar_pc_generator" required="true" output="screen"><param name="output_frequency" value="10.0"/><param name="perpendicular_treshold" value="0.05"/></node></group>-->
+  <!-- <group ns="/pcp/track/mtt"><remap from="/mtt/points" to="/planar_pc_generator/planar_pc"/><node name="node" pkg="mtt" type="line_fitting" required="true" output="screen"><remap from="/points" to="/pcp/fus/planar_pc/points"/><remap from="/markers" to="/pcp/trck/mtt/markers"/><remap from="/marker" to="/pcp/trck/mtt/marker"/><remap from="/targets" to="/mtt/trck/targets"/><param name="/scan" value="/planar_pc_generator/planar_pc"/></node></group> -->
+  <!--  -->
+  <!-- <remap from="/msg_coordinates" to="/msg_coordinates_c2"/> -->
+  <remap from="/mtt_targets" to="/mtt/trck/targets_c2"/>
+  <remap from="/line_markers" to="/line_markers_c2"/>
+  <remap from="/mtt_target_generator/im/feedback" to="/mtt_target_generator/im/feedback_c2"/>
+  <remap from="/mtt_target_generator/im/update" to="/mtt_target_generator/im/update_c2"/>
+  <remap from="/mtt_target_generator/im/update_full" to="/mtt_target_generator/im/update_full_c2"/>
+  <remap from="/array_of_markers" to="/array_of_markers_c2"/>
+  <remap from="/min_dist_to_obstacles" to="/min_dist_to_obstacles_c2"/>
+  <remap from="/reduced_pcl" to="/reduced_pcl_c2"/>
+  <remap from="/steer_drive_controller/cmd_vel" to="/steer_drive_controller/cmd_vel_c2"/>
+  <remap from="/trajectory_information" to="/trajectory_information_c2"/>
+  <node name="trajectory_planner_nodelet_c2" pkg="trajectory_planner" type="trajectory_planner_nodelet" required="true" output="screen"/>
+  <!--<node name="traj_executor" pkg="trajectory_planner" type="trajectory_executive" required="true" output="screen"/>-->
+  <!--<param name="/use_sim_time" type="bool" value="true" />-->
+  <!-- <node name="APgenerator_c2" pkg="trajectory_planner" type="APgenerator" required="true" output="screen"/> -->
+  <!--  -->
+  <node name="mtt_target_generator_c2" pkg="trajectory_planner" type="mtt_target_generator" required="true" output="screen"/>
+  <node name="tf_generator_c2" pkg="trajectory_planner" type="tf_generator" />
+  <node name="tf_generator2_c2" pkg="trajectory_planner" type="tf_generator2" />
+  <node name="tracking_frame_generator_c2" pkg="trajectory_planner" type="tracking_frame_generator" required="true" output="screen"/>
+  <node name="rviz_c2" pkg="rviz" type="rviz" args="--display-config $(find trajectory_planner)/config/rviz_simulator.rviz" required="true"/>
+</launch>
