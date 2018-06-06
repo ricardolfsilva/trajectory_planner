@@ -26,6 +26,7 @@
 ***************************************************************************************************/
 #ifndef _trajectory_planner_nodelet_CPP_
 #define _trajectory_planner_nodelet_CPP_
+
 /**
  * @file trajectory_planner_nodelet.cpp
  * @brief Uses the c-trajectory class, to publish trajectories and send the message to follow one of them
@@ -33,7 +34,16 @@
  * @version v0
  * @date 2012-04-19
  */
-#include "trajectory_planner_nodelet.h"
+
+/**
+ * @file trajectory_planner_nodelet.cpp
+ * @brief Uses the c-trajectory class, to publish trajectories and send the message to follow one of them
+ * @author Ricardo Silva
+ * @version v1
+ * @date 2018-06-06
+ */
+
+#include <trajectory_planner/trajectory_planner_nodelet.h>
 
 bool plan_trajectory = false;
 bool have_plan = false;
@@ -96,7 +106,6 @@ void mtt_callback(mtt::TargetListPC msg)
 	}
 }
 
-//-------------------------------------------------------------------------------------------------//
 /**
  * @brief Set polygon points
  * @param mtt::TargetListPC msg
@@ -114,9 +123,8 @@ void pcl_callback(const boost::shared_ptr<const sensor_msgs::PointCloud2>& input
 	// plan_trajectory = true;
 }
 
-//-------------------------------------------------------------------------------------------------//
 /**
- * @brief Set polygon points
+ * @brief Set line points
  * @param mtt::TargetListPC msg
  * @return void
  */
@@ -132,10 +140,10 @@ void line_callback(const boost::shared_ptr<const sensor_msgs::PointCloud2>& inpu
 	// plan_trajectory = true;
 }
 
-//-------------------------------------------------------------------------------------------------//
 /**
- * @brief Set polygon points
- * @param mtt::TargetListPC msg
+ * @brief Function that generates a few number of trajectories from the defines _NUM_TRAJ_, _NUM_NODES_ and
+ * _TRAJECTORY_ANGLE_
+ * @param vehicle speed
  * @return void
  */
 void velocity_callback(double speed)
@@ -189,10 +197,9 @@ void velocity_callback(double speed)
 	have_trajectory = true;
 }
 
-//-------------------------------------------------------------------------------------------------//
 /**
- * @brief Set polygon points
- * @param mtt::TargetListPC msg
+ * @brief Function that updates trajectories during the planning
+ * @param vehicle speed
  * @return void
  */
 void velocity_update_callback(double speed)
@@ -250,11 +257,10 @@ void velocity_update_callback(double speed)
 	have_trajectory = true;
 }
 
-//-------------------------------------------------------------------------------------------------//
 /**
- * @brief Set polygon points
- * @param mtt::TargetListPC msg
- * @return void
+ * @brief Sets the speed in function of chosen trajectory angle
+ * @param chosen trajectory angle
+ * @return speed
  */
 double angle_to_speed(double angle)
 {
@@ -263,11 +269,10 @@ double angle_to_speed(double angle)
 	// plan_trajectory = true;
 }
 
-//-------------------------------------------------------------------------------------------------//
 /**
- * @brief Set polygon points
- * @param mtt::TargetListPC msg
- * @return void
+ * @brief Last five chosen directions filter
+ * @param last chosen direction
+ * @return mean
  */
 double compute_last_dir(double angle)
 {
@@ -512,26 +517,20 @@ int main(int argc, char** argv)
 				//   |                                 |
 				//   |     Publish direction and speed |
 				//   |_________________________________|
-
-				/*ackermann_msgs::AckermannDrive ackermann_msg;
-
-				if (manage_vt->chosen_traj.index != -1)
-				{
-					ackermann_msg.steering_angle = (manage_vt->chosen_traj.index * 3 - 39) * M_PI / 180;
-					ackermann_msg.steering_angle_velocity = 0;
-					ackermann_msg.speed = 10.0;
-					ackermann_msg.acceleration = 0;
-					ackermann_msg.jerk = 0;
-					ackermann_pub.publish(ackermann_msg);
-				}*/
-
 				geometry_msgs::Twist twist_msg;
 
 				if (manage_vt->chosen_traj.index != -1)
 				{
 					// twist_msg.angular.z = compute_last_dir(manage_vt->chosen_traj.alpha);
 					twist_msg.angular.z = compute_last_dir(manage_vt->chosen_traj.alpha);
-					twist_msg.linear.x = speed;
+					if (manage_vt->chosen_traj.score <= 0)
+					{
+						twist_msg.linear.x = 0;
+					}
+					else
+					{
+						twist_msg.linear.x = speed;
+					}
 					twist_pub.publish(twist_msg);
 				}
 

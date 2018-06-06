@@ -24,6 +24,23 @@
  IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
  OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ***************************************************************************************************/
+
+/**
+ * @file mtt_target_generator.cpp
+ * @brief Interactive marker obstacle generator
+ * @author Joel Pereira
+ * @version v0
+ * @date 2012-04-19
+ */
+
+/**
+ * @file mtt_target_generator.cpp
+ * @brief Interactive marker obstacle generator
+ * @author Ricardo Silva
+ * @version v1
+ * @date 2018-06-06
+ */
+
 #include <math.h>
 #include <stdio.h>
 #include <visualization_msgs/Marker.h>
@@ -69,7 +86,6 @@ void processFeedback(const visualization_msgs::InteractiveMarkerFeedbackConstPtr
 
 	  mtt::TargetListPC message;
 	  message.header.stamp = ros::Time::now();
-	  // Ricardo Silva change frame_id = "/world" to frame_id = "/vehicle_odometry";
 	  message.header.frame_id = "/vehicle_odometry";
 
 	  // set the mtt msg id field
@@ -119,7 +135,6 @@ void processFeedback(const visualization_msgs::InteractiveMarkerFeedbackConstPtr
 
 	  // change the position of the line vis marker
 	  geometry_msgs::Point p;
-	  // Ricardo Silva change frame_id = "/world" to frame_id = "/vehicle_odometry";
 	  marker.header.frame_id = "/vehicle_odometry";
 	  marker.header.stamp = ros::Time::now();
 	  marker.ns = "lines";
@@ -185,7 +200,6 @@ InteractiveMarkerControl &makeBoxControl(InteractiveMarker &msg)
 void make6DofMarker(bool fixed)
 {
   InteractiveMarker int_marker;
-  // Ricardo Silva change frame_id = "/world" to frame_id = "/vehicle_odometry";
   int_marker.header.frame_id = "/vehicle_odometry";
   int_marker.pose.position.x = 5;
   int_marker.pose.position.y = 4;

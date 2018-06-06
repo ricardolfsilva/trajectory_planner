@@ -27,6 +27,22 @@
 #ifndef _trajectory_planner_nodelet_H_
 #define _trajectory_planner_nodelet_H_
 
+/**
+ * @file trajectory_planner_nodelet.h
+ * @brief include file from trajectory_planner_nodelet
+ * @author Joel Pereira
+ * @version v0
+ * @date 2012-05-10
+ */
+
+/**
+ * @file trajectory_planner_nodelet.h
+ * @brief Include file from trajectory_planner_nodelet
+ * @author Ricardo Silva
+ * @version v1
+ * @date 2018-06-06
+ */
+
 #include <atlasmv_base/AtlasmvMotionCommand.h>
 #include <atlasmv_base/AtlasmvStatus.h>
 #include <geometry_msgs/Polygon.h>

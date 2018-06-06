@@ -24,6 +24,23 @@
  IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
  OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ***************************************************************************************************/
+
+/**
+ * @file tracking_frame_generator.cpp
+ * @brief Transform frame generator
+ * @author Joel Pereira
+ * @version v0
+ * @date 2012-04-19
+ */
+
+/**
+ * @file tracking_frame_generator.cpp
+ * @brief Transform frame generator
+ * @author Ricardo Silva
+ * @version v1
+ * @date 2018-06-06
+ */
+
 #include <math.h>
 #include <ros/ros.h>
 #include <std_msgs/Float64.h>
@@ -31,12 +48,11 @@
 tf::TransformBroadcaster* p_broadcaster;
 
 /**
- * @brief Generates a frame higher than the car frame, to publish the point cloud to the mtt
+ * @brief Generates a frame higher than the car frame, to publish the point cloud to the mtt obstacle
  * @param int
  * @param char**
  * @return int
  */
-
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "tf_generator_node");

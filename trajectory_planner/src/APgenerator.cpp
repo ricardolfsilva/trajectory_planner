@@ -24,6 +24,23 @@
  IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
  OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ***************************************************************************************************/
+
+/**
+ * @file APgenerator.cpp
+ * @brief Interactive marker atractor point generator
+ * @author Joel Pereira
+ * @version v0
+ * @date 2012-04-19
+ */
+
+/**
+ * @file APgenerator.cpp
+ * @brief Interactive marker atractor point generator
+ * @author Ricardo Silva
+ * @version v1
+ * @date 2018-06-06
+ */
+
 #include <interactive_markers/interactive_marker_server.h>
 #include <interactive_markers/menu_handler.h>
 #include <math.h>
@@ -103,7 +120,6 @@ InteractiveMarkerControl &makeBoxControl(InteractiveMarker &msg)
 InteractiveMarker make6DofMarker(bool fixed)
 {
   InteractiveMarker int_marker;
-  // Ricardo Silva change frame_id = "/vehicle_odometry" to frame_id = "/world";
   int_marker.header.frame_id = "/world";
   int_marker.pose.position.x = 6;
   int_marker.pose.position.y = 0;

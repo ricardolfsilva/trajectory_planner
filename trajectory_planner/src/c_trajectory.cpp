@@ -24,8 +24,25 @@
  IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
  OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ***************************************************************************************************/
+
+/**
+ * @file c_trajectory.cpp
+ * @brief c_trajectory class generator
+ * @author Joel Pereira
+ * @version v0
+ * @date 2012-04-19
+ */
+
+/**
+ * @file c_trajectory.cpp
+ * @brief c_trajectory class generator
+ * @author Ricardo Silva
+ * @version v1
+ * @date 2018-06-06
+ */
+
 #include <trajectory_planner/c_trajectory.h>
-#include "trajectory_planner_nodelet.h"
+#include <trajectory_planner/trajectory_planner_nodelet.h>
 
 /**
  * @brief Test the input vectors and compute the local node coordinates

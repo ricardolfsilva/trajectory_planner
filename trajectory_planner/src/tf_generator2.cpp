@@ -24,6 +24,15 @@
  IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
  OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ***************************************************************************************************/
+
+/**
+ * @file tf_generator2.cpp
+ * @brief Transform frame generator
+ * @author Ricardo Silva
+ * @version v0
+ * @date 2018-06-06
+ */
+
 #include <math.h>
 #include <ros/ros.h>
 #include <std_msgs/Float64.h>
@@ -31,12 +40,11 @@
 tf::TransformBroadcaster* p_broadcaster2;
 
 /**
-   \file  tf_generator2.cpp
-   \brief TF broadcaster between "/map" ref (free_space_detection) and "/world" ref (trajectory_planner_nodelet)
-   \author Ricardo Silva
-   \date   March, 2018
+ * @brief TF broadcaster between "/map" ref (free_space_detection) and "/world" ref (trajectory_planner_nodelet)
+ * @param int
+ * @param char**
+ * @return int
  */
-
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "tf_generator2_node");

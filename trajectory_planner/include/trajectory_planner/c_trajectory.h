@@ -35,6 +35,15 @@
  * @date 2012-04-19
  */
 
+/**
+ * @file c_trajectory.h
+ * @brief Class which generates a few number of trajectories from the defines _NUM_TRAJ_, _NUM_NODES_ and
+ * _TRAJECTORY_ANGLE_
+ * @author Ricardo Silva
+ * @version v1
+ * @date 2018-06-06
+ */
+
 // INCLUDES
 #include <math.h>
 #include <pcl/conversions.h>

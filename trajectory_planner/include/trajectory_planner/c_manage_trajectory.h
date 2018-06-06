@@ -35,6 +35,14 @@
  * @date 2012-05-10
  */
 
+/**
+ * @file c_manage_trajectory.h
+ * @brief Class which evaluates the trajectories planned
+ * @author Ricardo Silva
+ * @version v1
+ * @date 2018-06-06
+ */
+
 // INCLUDES
 #include <geometry_msgs/Polygon.h>
 #include <math.h>
@@ -105,6 +113,7 @@ public:
     AP.theta = M_PI / 8;
     current_node = 0;
     chosen_traj.min_dist = 0;
+    chosen_traj.score = 0;
 #if _TRAJECTORY_LIB_DEBUG_
     printf("Constructor...\n");
 #endif
@@ -131,6 +140,7 @@ public:
     int index;
     double alpha;
     double min_dist;
+    double score;
   } chosen_traj;
 
   // ------  Functions  ------

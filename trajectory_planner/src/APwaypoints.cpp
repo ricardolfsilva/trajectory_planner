@@ -22,16 +22,20 @@
  ***************************************************************************************************/
 
 /**
-   \file  local_path_planning.cpp
-   \brief Algorithm for subscribing to lidar data and compute the free space
-   \author Ricardo Silva
-   \date   June, 2018
+   \@file  APwaypoints.cpp
+   \@brief Integration of global navigation way points
+   \@author Ricardo Silva
+    @version v0
+   \@date 2018-06-06
  */
 
-#include "trajectory_planner_nodelet.h"
+#include <trajectory_planner/trajectory_planner_nodelet.h>
 
 namespace waypoints_analise
 {
+/**
+ @brief Class to handle with the way points
+*/
 class waypointsAnalise
 {
 public:
@@ -59,6 +63,12 @@ private:
   geometry_msgs::PointStamped APtarget;
 };
 
+/**
+   @brief waypointsAnalise class constructor
+   @param Way points topic
+   @param Reference frame
+   @return void
+ */
 waypointsAnalise::waypointsAnalise(std::string topicName, std::string frame_id)
 {
   this->topicName = topicName;
@@ -72,6 +82,11 @@ waypointsAnalise::waypointsAnalise(std::string topicName, std::string frame_id)
   ROS_INFO("Topic %s subscribed!", topicName.c_str());
 }
 
+/**
+   @brief Function to deal with previous and next way points and publish the algorithm's target
+   @param Way points array
+   @return void
+ */
 void waypointsAnalise::waypointsDataTreatment(const std_msgs::Float64MultiArray::ConstPtr& waypoints)
 {
   if (waypoints->data.size() == 4)
@@ -106,6 +121,11 @@ void waypointsAnalise::waypointsDataTreatment(const std_msgs::Float64MultiArray:
   }
 }
 
+/**
+   @brief Function to calculate target point in a circle of r radius
+   @param Way points array
+   @return Target point
+ */
 geometry_msgs::PointStamped waypointsAnalise::computeAP(const std_msgs::Float64MultiArray& waypoints_in)
 {
   double r = 12;
@@ -125,7 +145,7 @@ geometry_msgs::PointStamped waypointsAnalise::computeAP(const std_msgs::Float64M
 }
 
 /**
-   @brief Main function to compute the algorithms for local path planning
+   @brief Main function to compute target point
    @param argc
    @param argv
    @return int

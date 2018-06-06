@@ -24,84 +24,32 @@
  IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
  OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ***************************************************************************************************/
-#include <trajectory_planner/c_manage_trajectory.h>
-#include "trajectory_planner_nodelet.h"
 
 /**
- * @brief Compute the free space
- *
- * Determines the intersection point of the line segment defined by points A and B with the line segment defined by
- points C and D.
-  Returns YES if the intersection point was found, and stores that point in X,Y.
-  Returns NO if there is no determinable intersection point, in which case X,Y will be unmodified.
+ * @file c_manage_trajectory.cpp
+ * @brief c_manage_trajectory class manager
+ * @author Joel Pereira
+ * @version v0
+ * @date 2012-04-19
+ */
+
+/**
+ * @file c_manage_trajectory.cpp
+ * @brief c_manage_trajectory class manager
+ * @author Ricardo Silva
+ * @version v1
+ * @date 2018-06-06
+ */
+
+#include <trajectory_planner/c_manage_trajectory.h>
+#include <trajectory_planner/trajectory_planner_nodelet.h>
+
+/**
+ * @brief Compute the free space. Determines the inclusion of a point in the rectangle that represents the car geometry.
  * @param trajectory_planner
  * @param vo
  * @return t_func_output
  */
-/*t_func_output c_manage_trajectory::compute_DLO(c_trajectoryPtr& trajectory, std::vector<t_obstacle>& vo)
-{
-  // delete all previous computed collision pts
-  trajectory->collision_pts.erase(trajectory->collision_pts.begin(), trajectory->collision_pts.end());
-
-  if (trajectory->closest_node < 0 || trajectory->closest_node >= (int)trajectory->x.size())
-  {
-    ROS_ERROR("Error on node");
-    return FAILURE;
-  }
-  // cycle all nodes until the closest node
-
-  trajectory->score.DLO = 10.0;  // Equal to maximum_admissible_to_DLO
-  trajectory->score.FS = 1;
-  for (int n = 0; n <= trajectory->closest_node; ++n)
-  {
-    if (trajectory->v_lines.size()-1 != trajectory->x.size())
-    {
-      ROS_ERROR("Node lines and number of nodes not equal");
-    }
-
-    // cycle all vehicle lines
-    for (size_t l = 0; l < trajectory->v_lines[n].size(); ++l)
-    {
-      double Ax = trajectory->v_lines[n][l].x[0];
-      double Ay = trajectory->v_lines[n][l].y[0];
-      double Bx = trajectory->v_lines[n][l].x[1];
-      double By = trajectory->v_lines[n][l].y[1];
-
-      // cycle all obstacles
-      for (size_t o = 0; o < vo.size(); ++o)
-      {
-        // cycle all lines inside each obstacle
-        for (size_t lo = 1; lo < vo[o].x.size(); ++lo)
-        {
-          double DLOprev = sqrt(pow(trajectory->v_lines[n][l].x[0] - vo[o].x[lo - 1], 2) +
-                                pow(trajectory->v_lines[n][l].y[0] - vo[o].y[lo - 1], 2));
-          if (trajectory->score.DLO > DLOprev)
-          {
-            trajectory->score.DLO = DLOprev;
-          }
-          double Cx = vo[o].x[lo - 1];
-          double Cy = vo[o].y[lo - 1];
-          double Dx = vo[o].x[lo];
-          double Dy = vo[o].y[lo];
-          double X, Y;
-
-          int ret = lineSegmentIntersection(Ax, Ay, Bx, By, Cx, Cy, Dx, Dy, &X, &Y);
-
-          if (ret == DO_INTERSECT)
-          {
-            t_point p;
-            p.x = X;
-            p.y = Y;
-            // trajectory->collision_pts.push_back(p);
-            trajectory->score.FS *= 0;
-          }
-        }
-      }
-    }
-  }
-  return SUCCESS;
-}*/
-
 t_func_output c_manage_trajectory::compute_DLO(c_trajectoryPtr& trajectory, std::vector<t_obstacle>& vo)
 {
   // delete all previous computed collision pts
@@ -225,7 +173,6 @@ t_func_output c_manage_trajectory::compute_DLO(c_trajectoryPtr& trajectory, std:
 
 /**
  * @brief Winding number test for a point in a polygon
- *
  * @param P = a point
  * @param V[] = vertex points of a polygon V[n+1] with V[n]=V[0]
  * @param n = number of points
@@ -256,7 +203,6 @@ int c_manage_trajectory::wn_PnPoly(geometry_msgs::Point32 P, geometry_msgs::Poly
 
 /**
  * @brief Tests if a point is Left|On|Right of an infinite line
- *
  * @param P0, P1, and P2 = points
  * @return >0 for P2 left of the line through P0 and P1
            =0 for P2  on the line
@@ -486,7 +432,6 @@ int c_manage_trajectory::set_chosen_traj(int n)
 
 /**
  * @brief Set the attractor point
- *
  * @param x
  * @param y
  * @param theta
@@ -502,7 +447,6 @@ t_func_output c_manage_trajectory::set_attractor_point(double x, double y, doubl
 
 /**
  * @brief Computes the trajectory global score
- *
  * @param trajectory
  * @return t_func_output
  */
@@ -521,7 +465,6 @@ t_func_output c_manage_trajectory::compute_global_traj_score(c_trajectoryPtr& tr
 
 /**
  * @brief Set the inter-axis distance of the vehicle
- *
  * @param val
  * @return t_func_output
  */
@@ -550,7 +493,7 @@ t_func_output c_manage_trajectory::create_new_trajectory(vector<double> alpha_in
 }
 
 /**
- * @brief Update a trajectory
+ * @brief Update a trajectory during planning execution
  * @param alpha_in
  * @param arc_in
  * @param speed_in
@@ -566,7 +509,6 @@ t_func_output c_manage_trajectory::update_trajectory(vector<double> alpha_in, ve
 
 /**
  * @brief Chooses the trajectory
- *
  * @return t_func_output
  */
 t_func_output c_manage_trajectory::compute_chosen_traj(void)
@@ -581,6 +523,7 @@ t_func_output c_manage_trajectory::compute_chosen_traj(void)
       chosen_traj.index = i;
       chosen_traj.min_dist = vt[i]->score.EVAL;
       chosen_traj.alpha = vt[i]->alpha[0];
+      chosen_traj.score = vt[i]->score.overall_norm;
       max_val = vt[i]->score.overall_norm;
     }
   }
@@ -593,7 +536,6 @@ t_func_output c_manage_trajectory::compute_chosen_traj(void)
 
 /**
  * @brief Create a static marker
- *
  * @return t_func_output
  */
 t_func_output c_manage_trajectory::create_static_markers(void)
@@ -610,7 +552,6 @@ t_func_output c_manage_trajectory::create_static_markers(void)
 
 /**
  * @brief Compute the markers array
- *
  * @param  marker_array
  * @return t_func_output
  */
@@ -810,7 +751,6 @@ t_func_output c_manage_trajectory::compute_vis_marker_array(visualization_msgs::
 
 /**
  * @brief Compute trajectories scores
- *
  * @return t_func_output
  */
 t_func_output c_manage_trajectory::compute_trajectories_scores(void)
@@ -848,7 +788,6 @@ t_func_output c_manage_trajectory::compute_trajectories_scores(void)
 
 /**
  * @brief Compute the distance to application point
- *
  * @param trajectory
  * @param AP
  * @return t_func_output
@@ -883,7 +822,6 @@ t_func_output c_manage_trajectory::compute_DAP(c_trajectoryPtr& trajectory, t_de
 
 /**
  * @brief Compute the angular difference
- *
  * @param trajectory
  * @param AP
  * @param i
@@ -899,7 +837,6 @@ double c_manage_trajectory::compute_ADAP(c_trajectoryPtr& trajectory, t_desired_
 
 /**
  * @brief Draw some informations about trajectories
- *
  * @param trajectory_planner
  * @param marker_vec
  * @param marker_count
